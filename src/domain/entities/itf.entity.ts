@@ -1,2 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IEntity {}
+import * as E from "fp-ts/lib/Either";
+export interface IEntity {
+    validate(): E.Either<DomainError, boolean>;
+}

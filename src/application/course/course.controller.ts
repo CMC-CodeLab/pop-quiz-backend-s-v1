@@ -8,12 +8,12 @@ export class CourseController {
   constructor(private readonly courseService: CourseService) {}
 
   @Post()
-  create(@Body() createCourseDto: CreateCourseDto) {
+  enroll(@Body() enrollCourseDto: CreateCourseDto) {
     return this.courseService.create(createCourseDto);
   }
 
   @Get()
-  findAll() {
+  findAllAvailableCourse() {
     return this.courseService.findAll();
   }
 
