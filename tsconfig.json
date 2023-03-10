@@ -19,11 +19,11 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@auth/auth": [
-        "libs/auth/src"
+      "@domain": [
+        "src/domain"
       ],
-      "@auth/auth/*": [
-        "libs/auth/src/*"
+      "@domain*": [
+        "src/domain/*"
       ]
     }
   }
