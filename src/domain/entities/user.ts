@@ -1,6 +1,6 @@
 import * as E from "fp-ts/lib/Either";
 import { IEntity } from "./itf.entity";
-export class User implements IEntity {
+export class UserEntity implements IEntity {
     id: number;
     full_name: string;
     user_name: string;
@@ -9,7 +9,7 @@ export class User implements IEntity {
     validate(): E.Either<DomainError, boolean> {
         return E.right(true);
     }
-    constructor(fields?: User) {
+    constructor(fields?: UserEntity) {
         Object.assign(this, fields);
     }
 }

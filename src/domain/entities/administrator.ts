@@ -1,8 +1,8 @@
-import { User } from "./user";
+import { UserEntity } from "./user";
 
-export class Administrator extends User {
+export class AdministratorEntity extends UserEntity {
     type: 'administrator';
-    constructor(fields: Administrator) {
+    constructor(fields: AdministratorEntity) {
         super(fields);
     }
 }

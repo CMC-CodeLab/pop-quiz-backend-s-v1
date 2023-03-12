@@ -1,11 +1,41 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { StudentModule } from './application/student/student.module';
 import { CourseModule } from './application/course/course.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UserModule } from './application/user/user.module';
 
 @Module({
-  imports: [CourseModule, StudentModule],
+  imports: [
+    ConfigModule.forRoot({
+      // load: [configuration],
+      isGlobal: true,
+    }),
+    CourseModule,
+    TypeOrmModule.forRootAsync({
+      imports: [
+        ConfigModule
+      ],
+      useFactory: async (configService: ConfigService) => ({
+        type: "mysql",
+        host: configService.get("MYSQL_HOST"),
+        port: configService.get("MYSQL_PORT"),
+        username: configService.get("MYSQL_USERNAME"),
+        password: configService.get("MYSQL_PASSWORD"),
+        database: configService.get("MYSQL_DATABASE"),
+        // host: "localhost",
+        // port: "3306",
+        // username: "root",
+        // password: "Fiuyjso@1981",
+        // database: "regov_school",
+        entities: [__dirname + '/**/*.model{.ts,.js}'],
+        synchronize: true, //Đồng bộ với database (true: Khai báo entity sẽ ghi đè table)
+        logging: false,
+        autoLoadEntities: true
+      }),
+      inject: [ConfigService],
+    }), UserModule,],
   controllers: [AppController],
   providers: [AppService],
 })

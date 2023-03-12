@@ -22,8 +22,8 @@
       "@domain": [
         "src/domain"
       ],
-      "@domain*": [
-        "src/domain/*"
+      "@entities*": [
+        "src/domain/entities*"
       ]
     }
   }

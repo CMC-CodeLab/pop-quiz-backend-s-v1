@@ -1,5 +1,5 @@
-import { User } from "./user";
+import { UserEntity } from "./user";
 
-export class Student extends User {
+export class StudentEntity extends UserEntity {
     type: 'student';
 }
