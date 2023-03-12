@@ -17,16 +17,19 @@ export class ApiResponse implements IOutputBoundary {
     error?: Error;
     payload?: any;
     message?: string;
-    success(payload, statusCode:number=200): void {
+    success(payload, statusCode:number=200,message?:string): void {
         this.payload = payload;
         this.statusCode = statusCode;
+        if (message!== undefined) this.message = message;
     }
     fail(error:Error,statusCode:number=200, message?:string) {
+        if (message!== undefined) this.message = message;
+        this.statusCode = statusCode;
         this.error = error;
     }
     ouput(): ApiResponseSuccess | ApiResponseFail {
         if (this.error !== undefined) return {statusCode:this.statusCode|| 400,  message: this.message?? this.error.message}
-        else return {statusCode: this.statusCode||200, payload: this.payload};
+        else return {statusCode: this.statusCode||200, payload: this.payload,message: this.message?? this.error.message};
     }
 
 }
