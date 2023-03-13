@@ -26,10 +26,20 @@
 
 API for the following school registration system. The system should allow students to register for courses and administrators to manage the course offerings and student enrollment
 
-## Solution
+## Architecture
+- The system applies Clean Architecture, it's a way to organize code in such that it encapsulates the business logic but keeps it separate from the delivery mechanism. That means the abstraction is not affected if the details are changed.
 
-- Enroll request push to Kafka to solve concurrent request and concurrency control
-- 
+  - application: entry points of all requests, its role is interface adapters, that convert data from the format most convenient for the use cases and entities, to the format most convenient for REST API like json response
+  - domain&entities: encapsulate Enterprise wide business rules
+  - usecases: The software in this layer contains application specific business rules. It encapsulates and implements all of the use cases of the system. These use cases orchestrate the flow of data to and from the entities, and direct those entities to use their enterprise wide business rules to achieve the goals of the use case.
+  - infrastructures: the outermost layer is generally composed of frameworks and tools such as the Database, the Web Framework, 
+
+- The design follow the rule: The inner surce code dependencies can only point inwards. Nothing in an inner circle can know anything at all about something in an outer circle
+
+## Solution challenges
+
+- Incomming Enroll requests will be pushed to redis queue, which then be processed in transaction by other workers. This way we can improve performance when having concurrent request and concurrency control
+
 
 ## Installation
 
@@ -37,7 +47,31 @@ API for the following school registration system. The system should allow studen
 $ yarn install
 ```
 
+## Import database
+
+- Import sql file in folder: db/Dump20230313.sql
+
+## Configuration
+
+- Edit .env file
+
+```bash
+
+  NODE_ENV=prod
+  API_PORT=3000
+  API_PORT_DEBUG=9229
+  MYSQL_HOST="localhost"
+  MYSQL_PORT=3306
+  MYSQL_USERNAME="root"
+  MYSQL_PASSWORD="root"
+  MYSQL_DATABASE="regov_school"
+
+JWT_SECRET="ndthai1"
+```
+
 ## Running the app
+
+
 
 ```bash
 # development

@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Scope } from "@nestjs/common";
 import { IOutputBoundary } from "src/usecases/itf.output-boundary";
 
 type ApiResponseSuccess = {
@@ -11,7 +11,7 @@ type ApiResponseFail = {
     statusCode: number;
     message: string;
 }
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class ApiResponse implements IOutputBoundary {
     statusCode?:number;
     error?: Error;

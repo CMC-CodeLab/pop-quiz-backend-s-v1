@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { getConnection } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -7,7 +7,7 @@ import { User } from 'src/infrastructure/data-source/mysql/typeorm/user.model';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
-  constructor(private userService: UserService, private jwtService: JwtService) { }
+  constructor( private userService: UserService, private jwtService: JwtService) { }
 
   async validateUser(user_name: string, pass: string): Promise<any> {
     const user: User = await this.userService.findOne(user_name);

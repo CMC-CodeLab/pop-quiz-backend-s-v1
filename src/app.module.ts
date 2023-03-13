@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CourseModule } from './application/course/course.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -47,7 +46,6 @@ import { RolesGuard } from './infrastructure/roles/roles.guard';
       }),
       inject: [ConfigService],
     }), UserModule,],
-  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule { }
