@@ -1,18 +1,18 @@
-import { Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
+import { LoginDto } from './dto/login.dto';
 
-@ApiBearerAuth()
 @ApiTags('AUTH')
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
     @UseGuards(AuthGuard('local'))
-    @ApiOperation({ summary: 'Admin create a course with maximum capacity' })
+    @ApiOperation({ summary: 'Username & Password login' })
     @Post('login')
-    async login(@Request() req) {
+    async login(@Request() req, @Body() loginDto: LoginDto) {
         return this.authService.login(req.user);
     }
 

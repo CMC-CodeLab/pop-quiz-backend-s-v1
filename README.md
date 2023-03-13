@@ -80,7 +80,6 @@ JWT_SECRET="ndthai1"
 ## Running the app
 
 
-
 ```bash
 # development
 $ yarn run start
@@ -91,6 +90,15 @@ $ yarn run start:dev
 # production mode
 $ yarn run start:prod
 ```
+
+## Account to login to get access_token
+
+```
+admin/123456
+student1/654321
+```
+
+## 
 
 ## Test
 
