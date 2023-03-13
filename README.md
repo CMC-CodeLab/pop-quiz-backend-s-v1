@@ -36,6 +36,14 @@ API for the following school registration system. The system should allow studen
 
 - The design follow the rule: The inner surce code dependencies can only point inwards. Nothing in an inner circle can know anything at all about something in an outer circle
 
+### Project folder structure
+
+![the picture](./docs/Folder-structure.png)
+
+### Project architecture
+
+![the picture](./docs/clean-architecture.jpg)
+
 ## Solution challenges
 
 - Incomming Enroll requests will be pushed to redis queue, which then be processed in transaction by other workers. This way we can improve performance when having concurrent request and concurrency control
@@ -47,7 +55,7 @@ API for the following school registration system. The system should allow studen
 $ yarn install
 ```
 
-## Import database
+## Import database (mysql)
 
 - Import sql file in folder: db/Dump20230313.sql
 
