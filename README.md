@@ -42,7 +42,7 @@ API for the following school registration system. The system should allow studen
 
 ### Project architecture
 
-![the picture](./docs/clean-architecture.jpg)
+![the picture2](./docs/clean-architecture.jpg)
 
 ## Solution challenges
 
