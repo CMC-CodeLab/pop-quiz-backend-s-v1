@@ -98,7 +98,8 @@ admin/123456
 student1/654321
 ```
 
-## 
+## Swagger link
+http://localhost:3000/api
 
 ## Test
 
