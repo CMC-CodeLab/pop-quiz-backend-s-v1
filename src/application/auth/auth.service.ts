@@ -12,6 +12,7 @@ export class AuthService {
   async validateUser(user_name: string, pass: string): Promise<any> {
     const user: User = await this.userService.findOne(user_name);
     if (user) {
+      // const p = await this.genHash(pass);
       const match = await bcrypt.compare(pass, user.password);
       if (!match) return null;
       const { password, ...result } = user;
@@ -28,5 +29,8 @@ export class AuthService {
   }
   verify(token: string) {
     return this.jwtService.verify(token);
+  }
+  async genHash(password: string, saltOrRounds:number = 10) {
+    return await bcrypt.hash(password,saltOrRounds);
   }
 }

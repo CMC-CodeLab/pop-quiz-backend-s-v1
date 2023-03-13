@@ -6,6 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './application/user/user.module';
 import { BullModule } from '@nestjs/bull';
+import { AuthModule } from './application/auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './infrastructure/roles/roles.guard';
 
 @Module({
   imports: [
@@ -19,6 +22,7 @@ import { BullModule } from '@nestjs/bull';
         port: 6379,
       },
     }),
+    AuthModule,
     CourseModule,
     TypeOrmModule.forRootAsync({
       imports: [

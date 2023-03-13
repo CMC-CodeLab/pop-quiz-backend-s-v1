@@ -7,11 +7,15 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from '../user/user.module';
+import { UserService } from '../user/user.service';
+import { User } from 'src/infrastructure/data-source/mysql/typeorm/user.model';
 
 @Global()
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    UserModule,
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -21,9 +25,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         signOptions: { expiresIn: '30d' },
       }),
     }),
-    TypeOrmModule.forRoot(),
+    TypeOrmModule.forFeature([User]),
   ],
   providers: [
+    UserService,
     AuthService,
     LocalStrategy,
     JwtStrategy,

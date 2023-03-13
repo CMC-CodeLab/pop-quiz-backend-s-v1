@@ -28,8 +28,8 @@ export class ApiResponse implements IOutputBoundary {
         this.error = error;
     }
     ouput(): ApiResponseSuccess | ApiResponseFail {
-        if (this.error !== undefined) return {statusCode:this.statusCode|| 400,  message: this.message?? this.error.message}
-        else return {statusCode: this.statusCode||200, payload: this.payload,message: this.message?? this.error.message};
+        if (this.error !== undefined) return {statusCode:this.statusCode|| 400,  message: this.message || this.error.message}
+        else return {statusCode: this.statusCode||200, payload: this.payload,message: this.message ||''};
     }
 
 }

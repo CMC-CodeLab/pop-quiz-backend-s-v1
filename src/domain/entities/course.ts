@@ -7,6 +7,7 @@ export class CourseEntity implements IEntity {
     number_of_students_enrolled: number;
     seats_left: number;
     maximum_capacity: number;
+    created_by: number;
     constructor (fields: CourseEntity) {
         Object.assign(this,fields);
     }

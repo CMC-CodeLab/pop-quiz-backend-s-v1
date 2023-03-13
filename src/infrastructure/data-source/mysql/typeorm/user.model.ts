@@ -1,8 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-export enum UserType {
-    ADMIN = 'Administrator',
-    STUDENT = 'Student'
-}
+import { Role } from "src/infrastructure/roles/role.enum";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Course } from "./course.model";
+
 
 @Entity()
 export class User {
@@ -21,6 +20,9 @@ export class User {
     @Column()
     email: string;
     
-    @Column({type:"enum",enum: UserType,default: UserType.STUDENT})
-    type: string; 
+    @Column({type:"set",enum: Role,default: [Role.STUDENT]})
+    roles: Role[]; 
+
+    @OneToMany(() => Course, (course) => course.user)
+    courses: Course[];
 }

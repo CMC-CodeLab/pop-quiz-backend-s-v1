@@ -54,7 +54,7 @@ export class CourseService implements ICourseGateway  {
     try {
       // execute some operations on this transaction:
       await queryRunner.manager.update(Course,course_id,course);
-      await queryRunner.manager.save(CoursesStudents,enrollCourseDto)
+      await queryRunner.manager.softRemove(CoursesStudents,{student_id,course_id});
       await queryRunner.manager.save(CourseRegistrationHistory,{status:CourseRegistrationType.UNREGISTERED,user_name: student.user_name, course_name: course.course_name});
 
         // commit transaction now:

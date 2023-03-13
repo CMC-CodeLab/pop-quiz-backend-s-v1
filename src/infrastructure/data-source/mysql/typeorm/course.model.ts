@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { User } from "./user.model";
 
 @Entity()
@@ -24,6 +24,12 @@ export class Course {
     @UpdateDateColumn()
     updated_at: string;
 
+    @Column()
+    created_by: number;
+
+    @ManyToOne(type=> User, user => user.courses)
+    user: User;
+    
     @ManyToMany(type => User, { cascade: true })
     @JoinTable({
         name: "courses_students", // table name for the junction table of this relation
