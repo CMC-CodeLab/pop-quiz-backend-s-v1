@@ -14,7 +14,7 @@ import { UpdateCourseDto } from './dto/update-course.dto';
 
 @Injectable()
 export class CourseService implements ICourseGateway  {
-  constructor (@InjectRepository(Course) private courseRepository: Repository<Course>, private dataSource: DataSource)  {}
+  constructor (@InjectRepository(Course) private courseRepository: Repository<Course>, @InjectRepository(CourseRegistrationHistory) private courseRegistrationHistoryRepository: Repository<CourseRegistrationHistory>,private dataSource: DataSource)  {}
   async getAllAvailableCourses(): Promise<CourseEntity[]> {
     let courses = await this.courseRepository.find({where:{
       seats_left: MoreThan(0)
@@ -95,5 +95,8 @@ export class CourseService implements ICourseGateway  {
         // you need to release query runner which is manually created:
         await queryRunner.release()
     }
+  }
+  async getEnrollCoursesHistory() {
+    return await this.courseRegistrationHistoryRepository.find({order:{created_at:"DESC"}});
   }
 }

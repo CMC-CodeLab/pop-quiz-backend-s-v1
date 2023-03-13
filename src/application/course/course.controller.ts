@@ -26,8 +26,8 @@ export class CourseController {
   constructor(private readonly courseService: CourseService, private readonly apiResponse: ApiResponse, @InjectQueue('course') private readonly enrollQueue: Queue) { }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.STUDENT)
   @Post('register')
+  // @Roles(Role.STUDENT)
   async enroll(@Body() enrollCourseDto: EnrollCourseDto) {
     await this.enrollQueue.add('enroll', enrollCourseDto);
     this.apiResponse.success({}, 200, 'Your registration is being processed!');
@@ -36,8 +36,13 @@ export class CourseController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  @Roles(Role.ADMIN)
+  // @Roles(Role.ADMIN)
   async create( @UserInfo() user, @Body() createCourseDto: CreateCourseDto) {
+    if (!user.roles.includes(Role.ADMIN)) {
+      this.apiResponse.fail(new Error("Forbidden"),403,"Forbidden resources!")
+      return this.apiResponse.ouput();
+    }
+    
     try {
       const response = await (new CreateCourseUsecase(this.apiResponse, this.courseService)).execute(new CreateCourseRequest({created_by: user.id,...createCourseDto} as CreateCourseRequest));
       this.apiResponse.success(response, 200);
@@ -49,9 +54,8 @@ export class CourseController {
 
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Roles(Role.STUDENT)
   @Get('get-all-available-courses')
+  @UseGuards(JwtAuthGuard)
   async getAllAvailableCourses() {
     try {
       const response = await (new AllAvailableCoursesUsecase(this.apiResponse, this.courseService)).execute(new AllAvailableCoursesRequest());
@@ -63,9 +67,14 @@ export class CourseController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
   @Get('get-all-courses')
-  async getAllCourses() {
+  // @Roles(Role.ADMIN)
+  async getAllCourses(@UserInfo() user) {
+    if (!user.roles.includes(Role.ADMIN)) {
+      this.apiResponse.fail(new Error("Forbidden"),403,"Forbidden resources!")
+      return this.apiResponse.ouput();
+    }
+  
     try {
       const response = await (new AllCoursesUsecase(this.apiResponse, this.courseService)).execute(new AllCoursesRequest());
       this.apiResponse.success(response, 200);
@@ -81,9 +90,12 @@ export class CourseController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
+  async update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto,@UserInfo() user) {
+    if (!user.roles.includes(Role.ADMIN)) {
+      this.apiResponse.fail(new Error("Forbidden"),403,"Forbidden resources!")
+      return this.apiResponse.ouput();
+    }
     try {
       const response = await (new UpdateCourseUsecase(this.apiResponse, this.courseService)).execute(new UpdateCourseRequest({ id, ...updateCourseDto }));
       this.apiResponse.success(response, 200);
@@ -94,9 +106,25 @@ export class CourseController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.STUDENT)
   @Delete(':id')
   remove(@Param('id') id: string, @UserInfo() user) {
     return this.courseService.remove(user.id, +id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('get-enroll-courses-history')
+  // @Roles(Role.ADMIN)
+  async getEnrollCoursesHistory(@UserInfo() user) {
+    if (!user.roles.includes(Role.ADMIN)) {
+      this.apiResponse.fail(new Error("Forbidden"),403,"Forbidden resources!")
+      return this.apiResponse.ouput();
+    }
+    try {
+      const response = await this.courseService.getEnrollCoursesHistory();
+      this.apiResponse.success(response, 200);
+    } catch (e) {
+      this.apiResponse.fail(e as Error, 400);
+    }
+    return this.apiResponse.ouput();
   }
 }
