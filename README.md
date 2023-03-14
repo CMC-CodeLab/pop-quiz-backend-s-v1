@@ -82,6 +82,8 @@ JWT_SECRET="ndthai1"
 
 ```bash
 # development
+
+$ docker run -p 6379:6379 -d redis
 $ yarn run start
 
 # watch mode
