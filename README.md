@@ -115,3 +115,5 @@ $ yarn run test:e2e
 # test coverage
 $ yarn run test:cov
 ```
+## Question 2
+question-2.ts
