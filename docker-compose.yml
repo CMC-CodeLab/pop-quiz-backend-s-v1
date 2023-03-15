@@ -1,0 +1,50 @@
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      # Only will build development stage from our dockerfile
+      target: development
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env
+      # Run a command against the development stage of the image
+    command: yarn start:dev
+    ports:
+      - 3000:3000
+    depends_on:
+      - redis
+      - db
+    links:
+      - db
+  db:
+    container_name: db
+    image: mysql:8.0
+    env_file:
+      - .env
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    ports:
+      - '3306:3306'
+      - '33060:33060'
+    command: --init-file /docker-entrypoint-initdb.d/init.sql
+    volumes:
+      - db:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+  redis:
+    # Name of container
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/data
+volumes:
+  redis:
+    driver: local
+  db:
+    driver: local

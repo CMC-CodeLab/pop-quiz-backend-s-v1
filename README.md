@@ -83,7 +83,8 @@ JWT_SECRET="ndthai1"
 ```bash
 # development
 
-$ docker run -p 6379:6379 -d redis
+$ docker run --name mysql --rm -v /tmp/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=regov_school -p 3306:3306 -it mysql:8.0
+
 $ yarn run start
 
 # watch mode

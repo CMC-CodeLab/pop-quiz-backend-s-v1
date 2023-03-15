@@ -19,6 +19,9 @@
 -- Table structure for table `course`
 --
 
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';
+USE regov_school;
+
 DROP TABLE IF EXISTS `course`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
